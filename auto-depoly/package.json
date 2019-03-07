@@ -1,0 +1,16 @@
+{
+  "name": "auto-depoly",
+  "version": "1.0.0",
+  "description": "自动部署服务",
+  "main": "app.js",
+  "scripts": {
+    "start": "pm2 start app.js --watch"
+  },
+  "author": "crazyball",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "shelljs": "^0.8.3"
+  }
+}
