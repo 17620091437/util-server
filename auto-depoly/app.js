@@ -16,7 +16,7 @@ app.post('/front-source/', (req, res) => {
   let cmds = [
     `cd ${config.FRONT_SOURCE_PATH}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
-    `git clean -xdf`, // 本地修改/新增了一堆文件，已经git add到暂存区，想放弃修改。
+    // `git clean -xdf`, // 本地修改/新增了一堆文件，已经git add到暂存区，想放弃修改。
     `git pull`
   ];
   let code = shelljs.exec(cmds.join(' && ')).code;
@@ -36,7 +36,7 @@ app.post('/back-source/', (req, res) => {
   let cmds = [
     `cd ${config.BACK_SOURCE_PATH}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
-    `git clean -xdf`, // 本地修改/新增了一堆文件，已经git add到暂存区，想放弃修改。
+    // `git clean -xdf`, // 本地修改/新增了一堆文件，已经git add到暂存区，想放弃修改。
     `git pull`
   ];
   let code = shelljs.exec(cmds.join(' && ')).code;
