@@ -36,7 +36,7 @@ app.post('/front-source/', async (req, res) => {
 });
 
 // 自动部署后端代码
-app.post('/back-source/', (req, res) => {
+app.post('/back-source/', async (req, res) => {
   console.log('========================');
   let cmds = [
     `cd ${config.BACK_SOURCE_PATH}`,
