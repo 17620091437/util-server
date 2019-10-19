@@ -1,4 +1,4 @@
 module.exports = {
-  FRONT_SOURCE_PATH: '/project/front-source',
-  BACK_SOURCE_PATH: '/project/back-source',
+  FRONT_SOURCE_PATH: '/root/crazyball/source_code/front-source',
+  BACK_SOURCE_PATH: '/root/crazyball/source_code/back-source',
 }

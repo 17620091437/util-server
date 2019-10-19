@@ -9,6 +9,7 @@
   "author": "crazyball",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "shelljs": "^0.8.3"
