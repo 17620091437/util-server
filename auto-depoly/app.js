@@ -30,8 +30,8 @@ app.post('/front-source/', async (req, res) => {
     isSuccess = true;
     res.send({ msg: 'Success' });
   }
-  let res = await sendEmail('front-source', isSuccess);
-  console.log(`Send Email:${res.data.status}`);
+  let result = await sendEmail('front-source', isSuccess);
+  console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 });
 
@@ -54,8 +54,8 @@ app.post('/back-source/', (req, res) => {
     isSuccess = true;
     res.send({ msg: 'Success' });
   }
-  let res = await sendEmail('back-source', isSuccess);
-  console.log(`Send Email:${res.data.status}`);
+  let result = await sendEmail('back-source', isSuccess);
+  console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 });
 
