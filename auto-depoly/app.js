@@ -19,9 +19,9 @@ app.post('/front-source/', async (req, res) => {
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`
   ];
-  let res = shelljs.exec(cmds.join(' && '));
-  let code = res.code;
-  let stdout = res.stdout;
+  let shellRes = shelljs.exec(cmds.join(' && '));
+  let code = shellRes.code;
+  let stdout = shellRes.stdout;
   let isSuccess = false;
   if (code !== 0) {
     console.log('fail auto depoly！');
@@ -45,9 +45,9 @@ app.post('/back-source/', async (req, res) => {
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`
   ];
-  let res = shelljs.exec(cmds.join(' && '));
-  let code = res.code;
-  let stdout = res.stdout;
+  let shellRes = shelljs.exec(cmds.join(' && '));
+  let code = shellRes.code;
+  let stdout = shellRes.stdout;
   let isSuccess = false;
   if (code !== 0) {
     console.log('fail auto depoly！');
@@ -65,9 +65,9 @@ app.post('/back-source/', async (req, res) => {
 
 app.post('/user-module/',async (req,res)=>{
   console.log('========================');
-  let res = shelljs.exec("./user-module.sh");
-  let code = res.code;
-  let stdout = res.stdout;
+  let shellRes = shelljs.exec("./user-module.sh");
+  let code = shellRes.code;
+  let stdout = shellRes.stdout;
   let isSuccess = false;
   if (code !== 0) {
     console.log('fail auto depoly！');
