@@ -65,8 +65,7 @@ app.post('/user-module/',async (req,res)=>{
     `cd ${config.USER_MODULE_PATH}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`,
-    // `go build -o user-module main.go`,
-    `pwd`,
+    `go build -o user-module main.go`,
     `pm2 restart user-module`,
   ];
   let code = shelljs.exec(cmds.join(' && ')).code;
