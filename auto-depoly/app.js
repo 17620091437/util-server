@@ -59,6 +59,31 @@ app.post('/back-source/', async (req, res) => {
   console.log('========================');
 });
 
+app.post('/user-module/',async (req,res)=>{
+  console.log('========================');
+  let cmds = [
+    `cd ${config.USER_MODULE_PATH}`,
+    `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
+    `git pull`,
+    `go build -o user-module main.go`
+    `pm2 restart user-module`
+  ];
+  let code = shelljs.exec(cmds.join(' && ')).code;
+  let isSuccess = false;
+  if (code !== 0) {
+    console.log('fail auto depoly！');
+    isSuccess = false;
+    res.send({ msg: 'Fail' });
+  } else {
+    console.log('back-source success auto depoly');
+    isSuccess = true;
+    res.send({ msg: 'Success' });
+  }
+  let result = await sendEmail('back-source', isSuccess);
+  console.log(`Send Email:${result.data.status}`);
+  console.log('========================');
+})
+
 app.listen(3001, (err) => {
   if (err) console.log(err);
   console.log('自动部署服务已开启...');
