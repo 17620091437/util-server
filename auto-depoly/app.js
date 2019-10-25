@@ -65,7 +65,8 @@ app.post('/user-module/',async (req,res)=>{
     `cd ${config.USER_MODULE_PATH}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`,
-    `go build -o user-module main.go`,
+    // `go build -o user-module main.go`,
+    `pwd`,
     `pm2 restart user-module`,
   ];
   let code = shelljs.exec(cmds.join(' && ')).code;
@@ -75,11 +76,11 @@ app.post('/user-module/',async (req,res)=>{
     isSuccess = false;
     res.send({ msg: 'Fail' });
   } else {
-    console.log('back-source success auto depoly');
+    console.log('user-module success auto depoly');
     isSuccess = true;
     res.send({ msg: 'Success' });
   }
-  let result = await sendEmail('back-source', isSuccess);
+  let result = await sendEmail('user-module', isSuccess);
   console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 })
