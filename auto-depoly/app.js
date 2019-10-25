@@ -89,11 +89,16 @@ app.listen(3001, (err) => {
 })
 
 async function sendEmail(projectName, isSuccess,stdout) {
+  let arr = stdout.split("\n");
+  let detail;
+  for(let i=0;i<arr.length;i++){
+    detail += `<p>${arr[i]}</p>`
+  }
   let res = await axios.post('http://localhost:7001/api/v1/sendMail', {
     authKey: 'BALLCRAZY',
     subject: '【自动部署】',
     to: '774028406@qq.com',
-    content: `${projectName} 自动部署${isSuccess ? '成功' : '失败'}\n${stdout}`,
+    content: `<h2>${projectName} 自动部署${isSuccess ? '成功' : '失败'}</h2>${detail}`,
   })
   return res;
 }
