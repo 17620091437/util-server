@@ -53,7 +53,7 @@ app.listen(3001, (err) => {
 
 async function sendEmail(projectName, isSuccess,stdout) {
   let arr = stdout.split("\n");
-  arr.shift();
+  arr.splice(1,1);
   let detail;
   for(let i=0;i<arr.length;i++){
     detail += `<p>${arr[i]}</p>`
@@ -136,7 +136,7 @@ function getPM2Status(){
   if(shellRes.code!=0){
     return shellRes.stderr
   }
-  let html = "===[Status]===\n<table>"
+  let html = "===[Status]===\n<table border=1>"
   let list = JSON.parse(shellRes.stdout)
   html += "<tr><th>id(pid)</th><th>name</th><th>monit</th><th>status</th><th>restart_time</th></tr>"
   list.forEach(task => {
