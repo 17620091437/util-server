@@ -83,16 +83,16 @@ function depolyGo(projectName){
   ];
   let shellRes = shelljs.exec(cmds.join(' && '));
   let code = shellRes.code;
-  let stdout = shellRes.stdout;
+  let out = `===[Error]===\n${shellRes.stderr}\n===[INFO]===\n${shellRes.stdout}`
   if(code!==0){
     return {
       res:false,
-      msg:stdout,
+      msg:out,
     }
   }else{
     return {
       res:true,
-      msg:stdout,
+      msg:out,
     }
   }
 }
@@ -113,16 +113,16 @@ function depolyNode(projectName){
   ];
   let shellRes = shelljs.exec(cmds.join(' && '));
   let code = shellRes.code;
-  let stdout = shellRes.stdout;
+  let out = `===[Error]===\n${shellRes.stderr}\n===[INFO]===\n${shellRes.stdout}`
   if(code!==0){
     return {
       res:false,
-      msg:stdout,
+      msg:out,
     }
   }else{
     return {
       res:true,
-      msg:stdout,
+      msg:out,
     }
   }
 }
