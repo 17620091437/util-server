@@ -75,7 +75,7 @@ function depolyGo(projectName){
     }
   };
   let cmds = [
-    `cd ${config.projectPath}`,
+    `cd ${projectPath}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`,
     `go build -o ${projectName} main.go`,
@@ -106,7 +106,7 @@ function depolyNode(projectName){
     }
   };
   let cmds = [
-    `cd ${config.projectPath}`,
+    `cd ${projectPath}`,
     `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
     `git pull`,
     `pm2 reload ${projectName}`,
