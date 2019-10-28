@@ -81,7 +81,7 @@ function depolyGo(projectName){
     `go build -o ${projectName} main.go`,
     `pm2 reload ${projectName}`,
   ];
-  let shellRes = shelljs.exec(cmds.join(' && '));
+  let shellRes = shelljs.exec("/bin/bash -l " + cmds.join(' && '));
   let code = shellRes.code;
   let out = `===[Error]===\n${shellRes.stderr}\n===[INFO]===\n${shellRes.stdout}`
   if(code!==0){
@@ -111,7 +111,7 @@ function depolyNode(projectName){
     `git pull`,
     `pm2 reload ${projectName}`,
   ];
-  let shellRes = shelljs.exec(cmds.join(' && '));
+  let shellRes = shelljs.exec("/bin/bash -l " + cmds.join(' && '));
   let code = shellRes.code;
   let out = `===[Error]===\n${shellRes.stderr}\n===[INFO]===\n${shellRes.stdout}`
   if(code!==0){
