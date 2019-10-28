@@ -16,15 +16,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/node/:name', async (req, res) => {
   console.log('========================');
   let projectName = req.params.name
-  let res = depolyNode(projectName)
-  if (!res.res) {
+  let data = depolyNode(projectName)
+  if (!data.res) {
     console.log('fail auto depoly！');
     res.send({ msg: 'Fail' });
   } else {
     console.log('user-module success auto depoly');
     res.send({ msg: 'Success' });
   }
-  let result = await sendEmail('user-module', res.res, res.msg);
+  let result = await sendEmail('user-module', data.res, data.msg);
   console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 });
@@ -33,15 +33,15 @@ app.post('/node/:name', async (req, res) => {
 app.post('/go/:name',async (req,res)=>{
   console.log('========================');
   let projectName = req.params.name
-  let res = depolyGo(projectName)
-  if (!res.res) {
+  let data = depolyGo(projectName)
+  if (!data.res) {
     console.log('fail auto depoly！');
     res.send({ msg: 'Fail' });
   } else {
     console.log('user-module success auto depoly');
     res.send({ msg: 'Success' });
   }
-  let result = await sendEmail('user-module', res.res, res.msg);
+  let result = await sendEmail('user-module', data.res, data.msg);
   console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 })
