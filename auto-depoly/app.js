@@ -52,7 +52,7 @@ app.listen(3001, (err) => {
 })
 
 async function sendEmail(projectName, isSuccess,stdout) {
-  let arr = stdout.split("\n");
+  let arr = stdout.split("\n").shift();
   let detail;
   for(let i=0;i<arr.length;i++){
     detail += `<p>${arr[i]}</p>`
@@ -121,9 +121,25 @@ function depolyNode(projectName){
       msg:out,
     }
   }else{
+    let status = getPM2Status()
     return {
       res:true,
-      msg:out,
+      msg:`${out}\n${status}`,
     }
   }
+}
+
+function getPM2Status(){
+  let shellRes = shelljs.exec(`pm2 jlist`);
+  if(shellRes.code!=0){
+    return shellRes.stderr
+  }
+  let html = "===[Status]===\n<table>"
+  let list = JSON.parse(shellRes.stdout)
+  html += "<tr><th>id(pid)</th><th>name</th><th>monit</th><th>status</th><th>restart_time</th></tr>"
+  list.forEach(task => {
+    html += `<tr><th>${task.pm_id}(${task.pid})</th><th>${task.name}</th><th>mem:${parseInt(task.monit.memory/1024/1024)}M cpu:${task.monit.cpu}</th><th>${task.pm2_env.status}</th><th>${task.pm2_env.restart_time}</th></tr>` 
+  });
+  html += "</table>"
+  return html
 }
