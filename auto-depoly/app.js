@@ -92,9 +92,10 @@ function depolyGo(projectName){
       msg:out,
     }
   }else{
+    let status = getPM2Status()
     return {
       res:true,
-      msg:out,
+      msg:`${out}\n${status}`,
     }
   }
 }
