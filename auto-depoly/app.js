@@ -52,12 +52,13 @@ app.listen(3001, (err) => {
 })
 
 async function sendEmail(projectName, isSuccess,stdout) {
-  let arr = stdout.split("\n").shift();
+  let arr = stdout.split("\n");
+  arr.shift();
   let detail;
   for(let i=0;i<arr.length;i++){
     detail += `<p>${arr[i]}</p>`
   }
-  console.log(detail)
+  // console.log(detail)
   let res = await axios.post('http://localhost:7001/api/v1/sendMail', {
     authKey: 'BALLCRAZY',
     subject: '【自动部署】',
