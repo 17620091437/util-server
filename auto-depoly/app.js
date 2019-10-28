@@ -11,74 +11,37 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// 自动部署前端代码
-app.post('/front-source/', async (req, res) => {
-  console.log('========================');
-  let cmds = [
-    `cd ${config.FRONT_SOURCE_PATH}`,
-    `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
-    `git pull`
-  ];
-  let shellRes = shelljs.exec(cmds.join(' && '));
-  let code = shellRes.code;
-  let stdout = shellRes.stdout;
-  let isSuccess = false;
-  if (code !== 0) {
-    console.log('fail auto depoly！');
-    isSuccess = false;
-    res.send({ msg: 'Fail' });
-  } else {
-    console.log('front-source success auto depoly');
-    isSuccess = true;
-    res.send({ msg: 'Success' });
-  }
-  let result = await sendEmail('front-source', isSuccess, stdout);
-  console.log(`Send Email:${result.data.status}`);
-  console.log('========================');
-});
 
-// 自动部署后端代码
-app.post('/back-source/', async (req, res) => {
+// 自动部署node代码
+app.post('/node/:name', async (req, res) => {
   console.log('========================');
-  let cmds = [
-    `cd ${config.BACK_SOURCE_PATH}`,
-    `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
-    `git pull`
-  ];
-  let shellRes = shelljs.exec(cmds.join(' && '));
-  let code = shellRes.code;
-  let stdout = shellRes.stdout;
-  let isSuccess = false;
-  if (code !== 0) {
+  let projectName = req.params.name
+  let res = depolyNode(projectName)
+  if (!res.res) {
     console.log('fail auto depoly！');
-    isSuccess = false;
-    res.send({ msg: 'Fail' });
-  } else {
-    console.log('back-source success auto depoly');
-    isSuccess = true;
-    res.send({ msg: 'Success' });
-  }
-  let result = await sendEmail('back-source', isSuccess, stdout);
-  console.log(`Send Email:${result.data.status}`);
-  console.log('========================');
-});
-
-app.post('/user-module/',async (req,res)=>{
-  console.log('========================');
-  let shellRes = shelljs.exec("./user-module.sh");
-  let code = shellRes.code;
-  let stdout = shellRes.stdout;
-  let isSuccess = false;
-  if (code !== 0) {
-    console.log('fail auto depoly！');
-    isSuccess = false;
     res.send({ msg: 'Fail' });
   } else {
     console.log('user-module success auto depoly');
-    isSuccess = true;
     res.send({ msg: 'Success' });
   }
-  let result = await sendEmail('user-module', isSuccess, stdout);
+  let result = await sendEmail('user-module', res.res, res.msg);
+  console.log(`Send Email:${result.data.status}`);
+  console.log('========================');
+});
+
+// 自动部署go代码
+app.post('/go/:name',async (req,res)=>{
+  console.log('========================');
+  let projectName = req.params.name
+  let res = depolyGo(projectName)
+  if (!res.res) {
+    console.log('fail auto depoly！');
+    res.send({ msg: 'Fail' });
+  } else {
+    console.log('user-module success auto depoly');
+    res.send({ msg: 'Success' });
+  }
+  let result = await sendEmail('user-module', res.res, res.msg);
   console.log(`Send Email:${result.data.status}`);
   console.log('========================');
 })
@@ -101,4 +64,65 @@ async function sendEmail(projectName, isSuccess,stdout) {
     content: `<h2>${projectName} 自动部署${isSuccess ? '成功' : '失败'}</h2>${detail}`,
   })
   return res;
+}
+
+function depolyGo(projectName){
+  let projectPath = config[projectName];
+  if(!projectPath) {
+    return {
+      res:false,
+      msg:"项目路径不存在",
+    }
+  };
+  let cmds = [
+    `cd ${config.projectPath}`,
+    `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
+    `git pull`,
+    `go build -o ${projectName} main.go`,
+    `pm2 reload ${projectName}`,
+  ];
+  let shellRes = shelljs.exec(cmds.join(' && '));
+  let code = shellRes.code;
+  let stdout = shellRes.stdout;
+  if(code!==0){
+    return {
+      res:false,
+      msg:stdout,
+    }
+  }else{
+    return {
+      res:true,
+      msg:stdout,
+    }
+  }
+}
+
+function depolyNode(projectName){
+  let projectPath = config[projectName];
+  if(!projectPath) {
+    return {
+      res:false,
+      msg:"项目路径不存在",
+    }
+  };
+  let cmds = [
+    `cd ${config.projectPath}`,
+    `git checkout .`, // 本地新增了一堆文件(并没有git add到暂存区)，想放弃修改。
+    `git pull`,
+    `pm2 reload ${projectName}`,
+  ];
+  let shellRes = shelljs.exec(cmds.join(' && '));
+  let code = shellRes.code;
+  let stdout = shellRes.stdout;
+  if(code!==0){
+    return {
+      res:false,
+      msg:stdout,
+    }
+  }else{
+    return {
+      res:true,
+      msg:stdout,
+    }
+  }
 }
