@@ -1,12 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-let config = require('./config');
 const shelljs = require('shelljs');
 const axios = require('axios')
 const fs = require("fs")
 
 const app = express();
-
+let config = {};
 //bodyParser设置
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,7 +31,7 @@ app.post('/front-source', async (req, res) => {
 
 // 自动部署node代码
 app.post('/node/:name', async (req, res) => {
-  config = JSON.parse(fs.readFileSync("./config").toString());
+  config = JSON.parse(fs.readFileSync("./config.json").toString());
   let projectName = req.params.name
   let data = depolyNode(projectName)
   if (!data.res) {
@@ -46,7 +45,7 @@ app.post('/node/:name', async (req, res) => {
 
 // 自动部署go代码
 app.post('/go/:name', async (req, res) => {
-  config = JSON.parse(fs.readFileSync("./config").toString());
+  config = JSON.parse(fs.readFileSync("./config.json").toString());
   let projectName = req.params.name
   let data = depolyGo(projectName)
   if (!data.res) {
