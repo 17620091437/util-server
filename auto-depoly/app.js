@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const config = require('./config');
+let config = require('./config');
 const shelljs = require('shelljs');
 const axios = require('axios')
+const fs = require("fs")
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.post('/front-source', async (req, res) => {
 
 // 自动部署node代码
 app.post('/node/:name', async (req, res) => {
+  config = JSON.parse(fs.readFileSync("./config").toString());
   let projectName = req.params.name
   let data = depolyNode(projectName)
   if (!data.res) {
@@ -44,6 +46,7 @@ app.post('/node/:name', async (req, res) => {
 
 // 自动部署go代码
 app.post('/go/:name', async (req, res) => {
+  config = JSON.parse(fs.readFileSync("./config").toString());
   let projectName = req.params.name
   let data = depolyGo(projectName)
   if (!data.res) {
